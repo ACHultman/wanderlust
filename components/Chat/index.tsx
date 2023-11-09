@@ -15,7 +15,7 @@ type Props = {
 const Chat = ({ sendMessageAndRun, messages, isRunning, resetThread }: Props) => {
   const sm = useMediaQuery('(max-width: 48em)');
 
-  const conversationHeightPx = `calc(${sm ? cssHalfMainSize : cssMainSize} - 112px)`; // 112px = 64px (padding) + 48px (input height)
+  const conversationHeightPx = `calc(${sm ? cssHalfMainSize : cssMainSize} - 94px)`; // 94px = 64px (padding) + 30 (input height / 2)
 
   return (
     <Stack style={sm ? { order: 2 } : {}}>
