@@ -1,0 +1,13 @@
+.box {
+  * {
+    border-radius: 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: black;
+    margin-block-start: 8px;
+    margin-block-end: 6px;
+  }
+}

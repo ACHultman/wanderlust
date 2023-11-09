@@ -20,12 +20,18 @@
   },
   "dependencies": {
     "@mantine/core": "7.2.0",
+    "@mantine/form": "^7.2.1",
     "@mantine/hooks": "7.2.0",
     "@next/bundle-analyzer": "^14.0.1",
     "@tabler/icons-react": "^2.40.0",
+    "mapbox-gl": "^2.15.0",
+    "maplibre-gl": "^3.5.2",
     "next": "14.0.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "openai": "^4.17.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-map-gl": "^7.1.6",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
