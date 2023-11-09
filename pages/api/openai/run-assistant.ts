@@ -11,18 +11,17 @@ export default async function handler(
     const { threadID, assistantID } = req.body;
 
     if (!threadID) {
-      res.status(400).json({ error: 'Thread ID is required' });
-      return;
+      return res.status(400).json({ error: 'Thread ID is required' });
     }
 
     const run = await openai.beta.threads.runs.create(threadID, {
       assistant_id: assistantID || process.env.OPENAI_ASSISTANT_ID,
     });
 
-    res.status(200).json(run);
+    return res.status(200).json(run);
   } catch (error) {
     console.error('The API encountered an error:', error);
 
-    res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }

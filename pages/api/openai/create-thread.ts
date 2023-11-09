@@ -11,10 +11,8 @@ export default async function handler(
     const thread = await openai.beta.threads.create();
 
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(thread);
-    return;
+    return res.status(200).json(thread);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-    return;
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
