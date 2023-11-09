@@ -20,12 +20,6 @@ const useAssistant = () => {
 
   const sendMessageAndRun = useCallback(
     async (content: string, files: any[] = []) => {
-      console.log('sendMessageAndRun', {
-        content,
-        files,
-        isRunning,
-        threadID,
-      });
       if (isRunning || !threadID) return;
 
       setIsRunning(true);
@@ -79,19 +73,15 @@ const useAssistant = () => {
 
           const run = await fetch(`/api/openai/get-run?threadID=${threadID}&runID=${runRes.id}`);
           runRes = await run.json();
-          console.log(runRes.status);
         }
 
         if (runRes.status === 'requires_action') {
           // get the arguments from the tool calls
           const toolCalls = runRes.required_action.submit_tool_outputs.tool_calls;
-          console.log('toolCalls', toolCalls);
           // update the map center
           const updateMapToolCall = toolCalls.find((tc: any) => tc.function.name === 'update_map');
           if (updateMapToolCall) {
-            console.log({ updateMapToolCall });
             const { longitude, latitude, zoom } = JSON.parse(updateMapToolCall.function.arguments);
-            console.log('setCenter', { longitude, latitude, zoom });
             setCenter({ longitude, latitude, zoom });
           }
 
@@ -102,19 +92,7 @@ const useAssistant = () => {
             return { location: { lat: latitude, lng: longitude }, label };
           });
 
-          console.log('addMarkers', { markers });
-
           addMarkers(markers);
-
-          console.log('toolcalls', toolCalls);
-          console.log('body', {
-            threadID,
-            runID: runRes.id,
-            toolOutputs: toolCalls.map((tc: any) => ({
-              output: 'true',
-              tool_call_id: tc.id,
-            })),
-          });
 
           await fetch('/api/openai/submit-tool-output', {
             method: 'POST',
