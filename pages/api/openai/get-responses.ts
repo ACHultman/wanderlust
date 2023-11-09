@@ -10,19 +10,20 @@ const initAssistantMessage: Message = {
 
 const openai = new OpenAI();
 
-type Error = {
-  error: string;
-};
-
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Message[] | Error>
+  res: NextApiResponse<
+    | Message[]
+    | {
+        error: string;
+      }
+  >
 ) {
   // get thread id from query params
   const threadID = req.query.threadID as string;
 
   if (!threadID) {
-    res.status(400).json({ error: 'Thread ID is required' });
+    return res.status(400).json({ error: 'Thread ID is required' });
   }
 
   try {
