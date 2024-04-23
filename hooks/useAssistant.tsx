@@ -14,7 +14,7 @@ const useAssistant = () => {
     threadID ? `/api/openai/get-responses?threadID=${threadID}` : null,
     fetcher,
     {
-      refreshInterval: 1000,
+      refreshInterval: 200,
     }
   );
 
@@ -69,7 +69,7 @@ const useAssistant = () => {
         // if queued or in_progress, wait and revalidate
         while (runRes.status === 'queued' || runRes.status === 'in_progress') {
           // poll for run status
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 200));
 
           const run = await fetch(`/api/openai/get-run?threadID=${threadID}&runID=${runRes.id}`);
           runRes = await run.json();
