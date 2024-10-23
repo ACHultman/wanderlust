@@ -8,14 +8,14 @@ export default async function handler(
   res: NextApiResponse<OpenAI.Beta.Threads.Run | { error: string }>
 ) {
   try {
-    const threadID = req.query.threadID as string;
+    const threadId = req.query.threadId as string;
     const runID = req.query.runID as string;
 
-    if (!threadID) {
+    if (!threadId) {
       return res.status(400).json({ error: 'Thread ID is required' });
     }
 
-    const run = await openai.beta.threads.runs.retrieve(threadID, runID);
+    const run = await openai.beta.threads.runs.retrieve(threadId, runID);
 
     return res.status(200).json(run);
   } catch (error) {

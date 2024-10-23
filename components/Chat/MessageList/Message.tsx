@@ -1,27 +1,24 @@
 import { Text, Group, Box } from '@mantine/core';
 import { IconCompass } from '@tabler/icons-react';
-import { Message } from '@/types/openai';
+import type { Message as MessageType } from 'ai';
 
 type Props = {
-  message: Message;
-  isLast: boolean;
+  message: MessageType;
 };
 
-export default function Message({ message, isLast }: Props) {
+export default function Message({ message }: Props) {
   return (
     <Group wrap="nowrap" align="flex-start" grow>
-      <Box c={!isLast ? 'dimmed' : ''}>
+      <Box>
         <IconCompass
           size={32}
           style={{ maxWidth: '32px' }}
           visibility={message.role === 'assistant' ? 'visible' : 'hidden'}
         />
       </Box>
-      {message.content.map((item, idx) => (
-        <Text key={idx} size="xl" maw="100%" c={!isLast ? 'dimmed' : ''}>
-          {item.text?.value ?? ''}
-        </Text>
-      ))}
+      <Text size="xl" maw="100%">
+        {message.content ?? ''}
+      </Text>
     </Group>
   );
 }

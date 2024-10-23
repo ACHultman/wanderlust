@@ -8,9 +8,9 @@ export default async function handler(
   res: NextApiResponse<OpenAI.Beta.Threads.Run | { error: string }>
 ) {
   try {
-    const { threadID, runID, toolOutputs } = req.body;
+    const { threadId, runID, toolOutputs } = req.body;
 
-    if (!threadID) {
+    if (!threadId) {
       return res.status(400).json({ error: 'Thread ID is required' }); // Use return here
     }
 
@@ -22,7 +22,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Tool outputs are required' }); // Use return here
     }
 
-    const run = await openai.beta.threads.runs.submitToolOutputs(threadID, runID, {
+    const run = await openai.beta.threads.runs.submitToolOutputs(threadId, runID, {
       tool_outputs: toolOutputs,
     });
 

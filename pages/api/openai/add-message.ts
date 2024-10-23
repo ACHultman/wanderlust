@@ -9,9 +9,9 @@ export default async function handler(
   res: NextApiResponse<Message | { error: string }>
 ) {
   try {
-    const { threadID, content, files } = req.body;
+    const { threadId, content, files } = req.body;
 
-    if (!threadID) {
+    if (!threadId) {
       return res.status(400).json({ error: 'Thread ID is required' });
     }
 
@@ -19,7 +19,7 @@ export default async function handler(
       return res.status(400).json({ error: 'Content is required' });
     }
 
-    const message = await openai.beta.threads.messages.create(threadID, {
+    const message = await openai.beta.threads.messages.create(threadId, {
       role: 'user',
       content: content,
       file_ids: files,

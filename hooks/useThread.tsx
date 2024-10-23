@@ -4,18 +4,18 @@ import useSWR from 'swr';
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export function useThread() {
-  const [threadID, setThreadID] = useLocalStorage({ key: 'threadID', defaultValue: null });
+  const [threadId, setthreadId] = useLocalStorage({ key: 'threadId', defaultValue: undefined });
 
   const { data, error, isLoading } = useSWR(
-    threadID ? null : '/api/openai/create-thread',
+    threadId ? null : '/api/openai/create-thread',
     fetcher,
     {
       shouldRetryOnError: false,
       revalidateOnFocus: false,
-      onSuccess: (data) => {
+      onSuccess: (t) => {
         // Only set the thread ID if we fetched a new one
-        if (data?.id && !threadID) {
-          setThreadID(data.id);
+        if (t?.id && !threadId) {
+          setthreadId(t.id);
         }
       },
     }
@@ -23,21 +23,21 @@ export function useThread() {
 
   async function resetThread() {
     // delete thread
-    await fetch(`/api/openai/delete-thread`, {
+    await fetch('/api/openai/delete-thread', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        threadID,
+        threadId,
       }),
     });
 
-    setThreadID(null);
+    setthreadId(undefined);
   }
 
   return {
-    threadID,
+    threadId,
     resetThread,
     thread: data,
     isLoading,

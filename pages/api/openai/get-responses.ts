@@ -20,14 +20,14 @@ export default async function handler(
   >
 ) {
   // get thread id from query params
-  const threadID = req.query.threadID as string;
+  const threadId = req.query.threadId as string;
 
-  if (!threadID) {
+  if (!threadId) {
     return res.status(400).json({ error: 'Thread ID is required' });
   }
 
   try {
-    const threadMessages = await openai.beta.threads.messages.list(threadID, {
+    const threadMessages = await openai.beta.threads.messages.list(threadId, {
       order: 'asc',
     });
 
