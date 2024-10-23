@@ -1,6 +1,6 @@
 {
-  "name": "mantine-next-template",
-  "version": "1.0.0",
+  "name": "wanderlust",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,9 +14,7 @@
     "jest:watch": "jest --watch",
     "prettier:check": "prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\"",
-    "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest",
-    "storybook": "storybook dev -p 6006",
-    "storybook:build": "storybook build"
+    "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest"
   },
   "dependencies": {
     "@mantine/core": "7.2.0",
@@ -38,12 +36,6 @@
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@next/eslint-plugin-next": "^14.0.1",
-    "@storybook/addon-essentials": "^8.3.6",
-    "@storybook/addon-styling-webpack": "^1.0.0",
-    "@storybook/blocks": "^8.3.6",
-    "@storybook/nextjs": "^8.3.6",
-    "@storybook/react": "^8.3.6",
-    "@storybook/testing-library": "^0.2.2",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
@@ -70,10 +62,7 @@
     "postcss-preset-mantine": "1.9.1",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.0.3",
-    "storybook": "^8.3.6",
-    "storybook-dark-mode": "^3.0.1",
     "ts-jest": "^29.1.1",
     "typescript": "5.2.2"
-  },
-  "packageManager": "yarn@4.0.1"
+  }
 }
