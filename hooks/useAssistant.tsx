@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useAssistant as useAiAssistant } from 'ai/react';
 import { useThread } from './useThread';
 import { MapCenter, MapMarker, useMap } from '@/context/Map';
@@ -26,6 +26,8 @@ const useAssistant = () => {
     threadId,
   });
 
+  const processedMessageIds = useRef<Set<string>>(new Set());
+
   useEffect(() => {
     if (useAssistantHelpers.messages.length === 0) {
       useAssistantHelpers.setMessages([
@@ -36,7 +38,7 @@ const useAssistant = () => {
         },
       ]);
     }
-  }, [useAssistantHelpers.messages, useAssistantHelpers.setMessages]);
+  }, [useAssistantHelpers.messages]);
 
   const filteredMessages = useMemo(
     () => useAssistantHelpers.messages.filter((m) => m.role !== 'data'),
@@ -45,6 +47,10 @@ const useAssistant = () => {
 
   useEffect(() => {
     useAssistantHelpers.messages.forEach((m) => {
+      if (processedMessageIds.current.has(m.id)) {
+        return;
+      }
+
       if (m.role !== 'data' || !m.data || typeof m.data !== 'object' || !('type' in m.data)) {
         return;
       }
@@ -65,6 +71,8 @@ const useAssistant = () => {
         default:
           break;
       }
+
+      processedMessageIds.current.add(m.id);
     });
   }, [useAssistantHelpers.messages, setCenter, addMarkers]);
 
