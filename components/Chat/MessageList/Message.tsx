@@ -8,7 +8,6 @@ type Props = {
 };
 
 const Message = memo(({ message }: Props) => {
-  console.log(message.content);
   return (
     <Group wrap="nowrap" align="flex-start" grow>
       <Box>
