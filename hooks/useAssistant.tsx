@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAssistant as useAiAssistant } from 'ai/react';
 import { useThread } from './useThread';
 import { MapCenter, MapMarker, useMap } from '@/context/Map';
@@ -26,25 +26,16 @@ const useAssistant = () => {
     threadId,
   });
 
-  useEffect(() => {
-    if (useAssistantHelpers.messages.length === 0) {
-      useAssistantHelpers.setMessages([
-        {
-          id: 'welcome',
-          role: 'assistant',
-          content: 'Hi there! Where would you like to go?',
-        },
-      ]);
-    }
-  }, [useAssistantHelpers.messages, useAssistantHelpers.setMessages]);
+  let { messages } = useAssistantHelpers;
 
-  const filteredMessages = useMemo(
-    () => useAssistantHelpers.messages.filter((m) => m.role !== 'data'),
-    [useAssistantHelpers.messages]
-  );
+  const processedMessageIds = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    useAssistantHelpers.messages.forEach((m) => {
+    messages.forEach((m) => {
+      if (processedMessageIds.current.has(m.id)) {
+        return;
+      }
+
       if (m.role !== 'data' || !m.data || typeof m.data !== 'object' || !('type' in m.data)) {
         return;
       }
@@ -65,12 +56,14 @@ const useAssistant = () => {
         default:
           break;
       }
+
+      processedMessageIds.current.add(m.id);
     });
-  }, [useAssistantHelpers.messages, setCenter, addMarkers]);
+  }, [messages, setCenter, addMarkers]);
 
   return {
     ...useAssistantHelpers,
-    messages: filteredMessages,
+    messages,
     resetThread,
   };
 };

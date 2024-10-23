@@ -14,7 +14,19 @@ export default function MessageList({ messages }: Props) {
 
   return (
     <Stack className={classes.scrollable} h="100%" gap="64px" style={{ overflow: 'auto' }}>
-      {messages?.map((message, index) => <Message key={index} message={message} />)}
+      <Message
+        key="welcome"
+        message={{
+          id: 'welcome',
+          role: 'assistant',
+          content: 'Hi there! Where would you like to go?',
+        }}
+      />
+      {messages
+        .filter((message) => !message.data)
+        .map((message, index) => (
+          <Message key={index} message={message} />
+        ))}
     </Stack>
   );
 }

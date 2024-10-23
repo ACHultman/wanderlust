@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Text, Group, Box } from '@mantine/core';
 import { IconCompass } from '@tabler/icons-react';
 import type { Message as MessageType } from 'ai';
@@ -6,7 +7,7 @@ type Props = {
   message: MessageType;
 };
 
-export default function Message({ message }: Props) {
+const Message = memo(({ message }: Props) => {
   return (
     <Group wrap="nowrap" align="flex-start" grow>
       <Box>
@@ -21,4 +22,6 @@ export default function Message({ message }: Props) {
       </Text>
     </Group>
   );
-}
+});
+
+export default Message;
