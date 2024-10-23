@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useAssistant as useAiAssistant } from 'ai/react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Message, useAssistant as useAiAssistant } from 'ai/react';
 import { useThread } from './useThread';
 import { MapCenter, MapMarker, useMap } from '@/context/Map';
 
@@ -20,6 +20,7 @@ function dataIsMapMarker(data: unknown): data is MapMarker {
 const useAssistant = () => {
   const { setCenter, addMarkers } = useMap();
   const { threadId, resetThread } = useThread();
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
 
   const useAssistantHelpers = useAiAssistant({
     api: '/api/openai/run-assistant',
@@ -73,11 +74,13 @@ const useAssistant = () => {
     });
   }, [messages, setCenter, addMarkers]);
 
-  const filteredMessages = useMemo(() => messages.filter((m) => m.role !== 'data'), [messages]);
+  useEffect(() => {
+    setChatMessages(messages.filter((m) => m.role !== 'data'));
+  }, [messages]);
 
   return {
     ...useAssistantHelpers,
-    messages: filteredMessages,
+    messages: chatMessages,
     resetThread,
   };
 };
