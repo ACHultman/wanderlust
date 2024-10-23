@@ -14,13 +14,7 @@ function dataIsMapCenter(data: unknown): data is MapCenter {
 }
 
 function dataIsMapMarker(data: unknown): data is MapMarker {
-  return (
-    !!data &&
-    typeof data === 'object' &&
-    'longitude' in data &&
-    'latitude' in data &&
-    'label' in data
-  );
+  return !!data && typeof data === 'object' && 'location' in data && 'label' in data;
 }
 
 const useAssistant = () => {
@@ -64,6 +58,7 @@ const useAssistant = () => {
           }
           break;
         case 'add_marker':
+          console.log('Adding marker:', data);
           if (dataIsMapMarker(data)) {
             addMarkers([{ location: data.location, label: data.label }]);
           }

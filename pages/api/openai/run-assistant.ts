@@ -20,27 +20,22 @@ export default async function handler(req: Request) {
     const assistantId = process.env.OPENAI_ASSISTANT_ID || '';
 
     if (!threadId) {
-      // return res.status(400).json({ error: 'Thread ID is required' });
       return new Response('Thread ID is required', { status: 400 });
     }
 
     if (!message) {
-      // return res.status(400).json({ error: 'Message is required' });
       return new Response('Message is required', { status: 400 });
     }
 
     if (!assistantId) {
-      // return res.status(400).json({ error: 'Assistant ID is required' });
       return new Response('Assistant ID is required', { status: 400 });
     }
 
-    // Create a new user message in the thread.
     const createdMessage = await openai.beta.threads.messages.create(threadId, {
       role: 'user',
       content: message,
     });
 
-    // Use the AssistantResponse to handle the response and tool calls.
     return AssistantResponse(
       { threadId, messageId: createdMessage.id },
       async ({ forwardStream, sendDataMessage }) => {
@@ -61,9 +56,7 @@ export default async function handler(req: Request) {
 
               switch (toolCall.function.name) {
                 case 'update_map':
-                  // eslint-disable-next-line no-case-declarations
                   const { longitude, latitude, zoom } = parameters;
-                  // Perform the map update logic on the server (e.g., save to a database).
                   console.log(
                     `Updating map center to: ${longitude}, ${latitude} with zoom ${zoom}`
                   );
@@ -84,17 +77,14 @@ export default async function handler(req: Request) {
                   };
 
                 case 'add_marker':
-                  // eslint-disable-next-line no-case-declarations
+                  console.log('Adding marker:', parameters);
                   const { longitude: markerLng, latitude: markerLat, label } = parameters;
-                  // Perform the marker addition logic on the server (e.g., save markers to a database).
-                  console.log(`Adding marker at: ${markerLng}, ${markerLat} with label "${label}"`);
 
                   sendDataMessage({
                     role: 'data',
                     data: {
                       type: 'add_marker',
-                      longitude: markerLng,
-                      latitude: markerLat,
+                      location: { lat: markerLat, lng: markerLng },
                       label,
                     },
                   });
@@ -110,8 +100,6 @@ export default async function handler(req: Request) {
             }
           );
 
-          // Submit tool outputs back to OpenAI's thread.
-          // eslint-disable-next-line no-await-in-loop
           runResult = await forwardStream(
             openai.beta.threads.runs.submitToolOutputsStream(threadId, runResult.id, {
               tool_outputs,
