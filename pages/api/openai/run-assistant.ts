@@ -51,7 +51,7 @@ export default async function handler(req: Request) {
           runResult.required_action?.type === 'submit_tool_outputs'
         ) {
           const tool_outputs = runResult.required_action.submit_tool_outputs.tool_calls.map(
-            (toolCall: any) => {
+            (toolCall) => {
               const parameters = JSON.parse(toolCall.function.arguments);
 
               switch (toolCall.function.name) {
