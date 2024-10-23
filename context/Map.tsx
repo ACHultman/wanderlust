@@ -1,4 +1,4 @@
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode, useCallback } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
 
 export type MapCenter = {
@@ -45,12 +45,22 @@ export const MapProvider = ({ children }: { children: ReactNode }) => {
     defaultValue: [],
   });
 
-  function addMarkers(newMarkers: MapMarker[]) {
-    setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
-  }
+  const setCenterCallback = useCallback(
+    (newCenter: MapCenter) => {
+      setCenter(newCenter);
+    },
+    [setCenter]
+  );
+
+  const addMarkers = useCallback(
+    (newMarkers: MapMarker[]) => {
+      setMarkers((prevMarkers) => [...prevMarkers, ...newMarkers]);
+    },
+    [setMarkers]
+  );
 
   return (
-    <MapContext.Provider value={{ center, markers, setCenter, addMarkers }}>
+    <MapContext.Provider value={{ center, markers, setCenter: setCenterCallback, addMarkers }}>
       {children}
     </MapContext.Provider>
   );

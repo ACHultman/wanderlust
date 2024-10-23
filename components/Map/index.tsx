@@ -1,11 +1,11 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box } from '@mantine/core';
 import React from 'react';
 import Mapbox, { Marker, NavigationControl } from 'react-map-gl';
 import mapboxgl from 'mapbox-gl';
+import { Box } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import classes from './Map.module.css';
 import { useMap } from '@/context/Map';
-import { useMediaQuery } from '@mantine/hooks';
 import { cssHalfMainSize, cssMainSize } from '@/theme';
 
 function Map() {

@@ -2,19 +2,12 @@ import { Stack, Box } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { cssHalfMainSize, cssMainSize } from '@/theme';
 import MessageList from './MessageList';
-import { Message } from '@/types/openai';
 import MessageInput from './MessageInput';
+import useAssistant from '@/hooks/useAssistant';
 
-type Props = {
-  messages: Message[] | undefined;
-  sendMessageAndRun: (message: string) => void;
-  isRunning: boolean;
-  resetThread: () => void;
-};
-
-const Chat = ({ sendMessageAndRun, messages, isRunning, resetThread }: Props) => {
+const Chat = () => {
+  const { messages, status, append, resetThread } = useAssistant();
   const sm = useMediaQuery('(max-width: 48em)');
-
   const conversationHeightPx = `calc(${sm ? cssHalfMainSize : cssMainSize} - 94px)`; // 94px = 64px (padding) + 30 (input height / 2)
 
   return (
@@ -26,8 +19,8 @@ const Chat = ({ sendMessageAndRun, messages, isRunning, resetThread }: Props) =>
         <MessageList messages={messages} />
       </Box>
       <MessageInput
-        sendMessageAndRun={sendMessageAndRun}
-        isRunning={isRunning}
+        submitMessage={append}
+        isRunning={status === 'in_progress'}
         resetThread={resetThread}
       />
     </Stack>

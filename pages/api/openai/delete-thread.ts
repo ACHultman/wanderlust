@@ -8,9 +8,9 @@ export default async function handler(
   res: NextApiResponse<OpenAI.Beta.Threads.ThreadDeleted | { error: string }>
 ) {
   try {
-    const { threadID } = req.body;
+    const { threadId } = req.body;
 
-    const threadDeleted = await openai.beta.threads.del(threadID);
+    const threadDeleted = await openai.beta.threads.del(threadId);
 
     res.setHeader('Content-Type', 'application/json');
     return res.status(200).json(threadDeleted);

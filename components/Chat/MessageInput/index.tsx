@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { IconArrowUp, IconTrash } from '@tabler/icons-react';
+import type { UseAssistantHelpers } from '@ai-sdk/react';
 import { TextInput, Button, Stack, Text, Group, ActionIcon, Popover } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconArrowUp, IconTrash } from '@tabler/icons-react';
 import classes from './MessageInput.module.css';
 
 type FormValues = {
@@ -9,12 +10,12 @@ type FormValues = {
 };
 
 type Props = {
-  sendMessageAndRun: (message: string) => void;
+  submitMessage: UseAssistantHelpers['append'];
   isRunning: boolean;
   resetThread: () => void;
 };
 
-export default function MessageInput({ isRunning, sendMessageAndRun, resetThread }: Props) {
+export default function MessageInput({ isRunning, submitMessage, resetThread }: Props) {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const form = useForm<FormValues>({
     initialValues: {
@@ -22,9 +23,16 @@ export default function MessageInput({ isRunning, sendMessageAndRun, resetThread
     },
   });
 
-  function handleSubmit(values: FormValues) {
-    if (!values.message.trim()) return;
-    sendMessageAndRun(values.message);
+  async function handleSubmit(values: FormValues) {
+    if (!values.message.trim()) {
+      return;
+    }
+
+    await submitMessage({
+      role: 'user',
+      content: values.message,
+    });
+
     form.reset();
   }
 
