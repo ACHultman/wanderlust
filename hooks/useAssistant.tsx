@@ -26,10 +26,12 @@ const useAssistant = () => {
     threadId,
   });
 
+  let { messages } = useAssistantHelpers;
+
   const processedMessageIds = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    if (useAssistantHelpers.messages.length === 0) {
+    if (messages.length === 0) {
       useAssistantHelpers.setMessages([
         {
           id: 'welcome',
@@ -38,15 +40,10 @@ const useAssistant = () => {
         },
       ]);
     }
-  }, [useAssistantHelpers.messages]);
-
-  const filteredMessages = useMemo(
-    () => useAssistantHelpers.messages.filter((m) => m.role !== 'data'),
-    [useAssistantHelpers.messages]
-  );
+  }, [messages]);
 
   useEffect(() => {
-    useAssistantHelpers.messages.forEach((m) => {
+    messages.forEach((m) => {
       if (processedMessageIds.current.has(m.id)) {
         return;
       }
@@ -74,7 +71,9 @@ const useAssistant = () => {
 
       processedMessageIds.current.add(m.id);
     });
-  }, [useAssistantHelpers.messages, setCenter, addMarkers]);
+  }, [messages, setCenter, addMarkers]);
+
+  const filteredMessages = useMemo(() => messages.filter((m) => m.role !== 'data'), [messages]);
 
   return {
     ...useAssistantHelpers,
