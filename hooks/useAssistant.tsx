@@ -58,7 +58,6 @@ const useAssistant = () => {
           }
           break;
         case 'add_marker':
-          console.log('Adding marker:', data);
           if (dataIsMapMarker(data)) {
             addMarkers([{ location: data.location, label: data.label }]);
           }

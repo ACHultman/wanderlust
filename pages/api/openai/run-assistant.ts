@@ -57,9 +57,6 @@ export default async function handler(req: Request) {
               switch (toolCall.function.name) {
                 case 'update_map':
                   const { longitude, latitude, zoom } = parameters;
-                  console.log(
-                    `Updating map center to: ${longitude}, ${latitude} with zoom ${zoom}`
-                  );
 
                   sendDataMessage({
                     role: 'data',
@@ -77,7 +74,6 @@ export default async function handler(req: Request) {
                   };
 
                 case 'add_marker':
-                  console.log('Adding marker:', parameters);
                   const { longitude: markerLng, latitude: markerLat, label } = parameters;
 
                   sendDataMessage({
