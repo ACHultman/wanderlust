@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useAssistant as useAiAssistant } from 'ai/react';
-import { useThread } from './useThread';
 import { MapCenter, MapMarker, useMap } from '@/context/Map';
 
 function dataIsMapCenter(data: unknown): data is MapCenter {
@@ -19,14 +18,12 @@ function dataIsMapMarker(data: unknown): data is MapMarker {
 
 const useAssistant = () => {
   const { setCenter, addMarkers } = useMap();
-  const { threadId, resetThread } = useThread();
 
   const useAssistantHelpers = useAiAssistant({
     api: '/api/openai/run-assistant',
-    threadId,
   });
 
-  let { messages } = useAssistantHelpers;
+  const { messages, setThreadId } = useAssistantHelpers;
 
   const processedMessageIds = useRef<Set<string>>(new Set());
 
@@ -64,7 +61,7 @@ const useAssistant = () => {
   return {
     ...useAssistantHelpers,
     messages,
-    resetThread,
+    setThreadId,
   };
 };
 

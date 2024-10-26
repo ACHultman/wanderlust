@@ -6,7 +6,7 @@ import MessageInput from './MessageInput';
 import useAssistant from '@/hooks/useAssistant';
 
 const Chat = () => {
-  const { messages, status, append, resetThread } = useAssistant();
+  const { messages, status, append, setThreadId } = useAssistant();
   const sm = useMediaQuery('(max-width: 48em)');
   const conversationHeightPx = `calc(${sm ? cssHalfMainSize : cssMainSize} - 94px)`; // 94px = 64px (padding) + 30 (input height / 2)
 
@@ -21,7 +21,7 @@ const Chat = () => {
       <MessageInput
         submitMessage={append}
         isRunning={status === 'in_progress'}
-        resetThread={resetThread}
+        resetThread={() => setThreadId(undefined)}
       />
     </Stack>
   );
